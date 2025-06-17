@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedOut - The Anti-Network</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="#" class="logo" onclick="showPage('home')">
+                <i class="fas fa-skull"></i>
+                <span>LinkedOut</span>
+            </a>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" onclick="showPage('home')">Feed</a>
+                <a href="#" class="nav-link" onclick="showPage('network')">Network</a>
+                <a href="#" class="nav-link" onclick="showPage('jobs')">Jobs</a>
+                <a href="#" class="nav-link" onclick="showPage('messaging')">Chat</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search for rebels...">
+        </div>
+        <div class="navbar-right">
+            <div class="nav-icon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            <div class="nav-icon">
+                <i class="fas fa-comment-alt"></i>
+                <span class="notification-badge">7</span>
+            </div>
+            <div class="profile-pic" onclick="showPage('profile')"></div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="container">
+            <!-- Left Sidebar -->
+            <aside class="sidebar">
+                <div class="user-card">
+                    <div class="profile-img"></div>
+                    <h3>Alex "Renegade" Johnson</h3>
+                    <p>Corporate Escapee | Tech Industry Critic</p>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">328</div>
+                            <div class="stat-label">Connections</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">1.2K</div>
+                            <div class="stat-label">Followers</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="sidebar-item" onclick="showPage('network')">
+                    <i class="fas fa-user-friends"></i>
+                    <span>My Network</span>
+                </a>
+                <a href="#" class="sidebar-item" onclick="showPage('jobs')">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Job Alerts</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Saved Posts</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="fas fa-users"></i>
+                    <span>Groups</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events</span>
+                </a>
+                <a href="#" class="sidebar-item">
+                    <i class="fas fa-hashtag"></i>
+                    <span>Followed Hashtags</span>
+                </a>
+            </aside>
+            <!-- Main Feed -->
+            <main class="feed">
+                <div class="feed-header">
+                    <h2>Rebel Profiles</h2>
+                    <div class="filter-options">
+                        <button class="filter-btn active">All</button>
+                        <button class="filter-btn">Tech</button>
+                        <button class="filter-btn">Creative</button>
+                        <button class="filter-btn">Finance</button>
+                    </div>
+                </div>
+                <!-- Profiles Section -->
+                <div class="profiles-container">
+                    <div class="profiles-grid">
+                        <!-- Profile 1 -->
+                        <a href="#" class="profile-card" onclick="showProfile('sarah')">
+                            <div class="profile-banner"></div>
+                            <div class="profile-avatar"></div>
+                            <div class="profile-info">
+                                <h3>Sarah "Firewall" Williams</h3>
+                                <div class="profile-title">Security Researcher | Ethical Hacker</div>
+                                <div class="profile-bio">Exposing corporate security flaws and fighting for digital privacy rights</div>
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">482</div>
+                                        <div class="stat-label">Connections</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">87</div>
+                                        <div class="stat-label">Posts</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">24</div>
+                                        <div class="stat-label">Projects</div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="action-btn connect-btn">Connect</button>
+                                    <button class="action-btn message-btn">Message</button>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Profile 2 -->
+                        <a href="#" class="profile-card" onclick="showProfile('marcus')">
+                            <div class="profile-banner" style="background: linear-gradient(to right, #ff9966, #ffcc00);"></div>
+                            <div class="profile-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
+                            <div class="profile-info">
+                                <h3>Marcus "Vanguard" Chen</h3>
+                                <div class="profile-title">Blockchain Developer | DeFi Architect</div>
+                                <div class="profile-bio">Building decentralized alternatives to traditional finance systems</div>
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">721</div>
+                                        <div class="stat-label">Connections</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">42</div>
+                                        <div class="stat-label">Posts</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">16</div>
+                                        <div class="stat-label">Projects</div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="action-btn connect-btn">Connect</button>
+                                    <button class="action-btn message-btn">Message</button>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Profile 3 -->
+                        <a href="#" class="profile-card" onclick="showProfile('zara')">
+                            <div class="profile-banner" style="background: linear-gradient(to right, #ff4d4d, #ff66cc);"></div>
+                            <div class="profile-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
+                            <div class="profile-info">
+                                <h3>Zara "Phantom" Rodriguez</h3>
+                                <div class="profile-title">Digital Nomad | Remote Work Advocate</div>
+                                <div class="profile-bio">Helping professionals escape the 9-to-5 grind and reclaim their time</div>
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">1.2K</div>
+                                        <div class="stat-label">Connections</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">156</div>
+                                        <div class="stat-label">Posts</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">32</div>
+                                        <div class="stat-label">Projects</div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="action-btn connect-btn">Connect</button>
+                                    <button class="action-btn message-btn">Message</button>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Profile 4 -->
+                        <a href="#" class="profile-card" onclick="showProfile('elijah')">
+                            <div class="profile-banner" style="background: linear-gradient(to right, #4dff4d, #66ffff);"></div>
+                            <div class="profile-avatar" style="background: linear-gradient(45deg, #66ffff, #4dff4d);"></div>
+                            <div class="profile-info">
+                                <h3>Elijah "Cypher" Kim</h3>
+                                <div class="profile-title">AI Ethics Researcher | Algorithm Auditor</div>
+                                <div class="profile-bio">Fighting biased algorithms and unethical AI implementations</div>
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">893</div>
+                                        <div class="stat-label">Connections</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">64</div>
+                                        <div class="stat-label">Posts</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">19</div>
+                                        <div class="stat-label">Projects</div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="action-btn connect-btn">Connect</button>
+                                    <button class="action-btn message-btn">Message</button>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Profile 5 -->
+                        <a href="#" class="profile-card" onclick="showProfile('nina')">
+                            <div class="profile-banner" style="background: linear-gradient(to right, #9966ff, #cc66ff);"></div>
+                            <div class="profile-avatar" style="background: linear-gradient(45deg, #cc66ff, #9966ff);"></div>
+                            <div class="profile-info">
+                                <h3>Nina "Nexus" Parker</h3>
+                                <div class="profile-title">Mental Health Advocate | Corporate Wellness Critic</div>
+                                <div class="profile-bio">Challenging toxic workplace cultures and promoting mental wellbeing</div>
+                                <div class="profile-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-number">2.4K</div>
+                                        <div class="stat-label">Connections</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">214</div>
+                                        <div class="stat-label">Posts</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-number">28</div>
+                                        <div class="stat-label">Projects</div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="action-btn connect-btn">Connect</button>
+                                    <button class="action-btn message-btn">Message</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </main>
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3>Rebel Trends</h3>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-tag">
+                            <i class="fas fa-hashtag"></i>
+                            <span>AntiWorkMovement</span>
+                        </div>
+                        <div class="trending-stats">4,218 posts today</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-tag">
+                            <i class="fas fa-hashtag"></i>
+                            <span>QuietQuitting</span>
+                        </div>
+                        <div class="trending-stats">3,871 posts today</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-tag">
+                            <i class="fas fa-hashtag"></i>
+                            <span>DigitalNomadLife</span>
+                        </div>
+                        <div class="trending-stats">2,943 posts today</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-tag">
+                            <i class="fas fa-hashtag"></i>
+                            <span>CorporateEscapees</span>
+                        </div>
+                        <div class="trending-stats">2,516 posts today</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-tag">
+                            <i class="fas fa-hashtag"></i>
+                            <span>BurnoutRecovery</span>
+                        </div>
+                        <div class="trending-stats">1,982 posts today</div>
+                    </div>
+                </div>
+                <div class="ad-container">
+                    <div class="ad-content">
+                        <h3>Corporate Burnout?</h3>
+                        <p>Join our community of professionals who've escaped the 9-to-5 grind and reclaimed their lives.</p>
+                        <button class="ad-btn">Learn the Secrets</button>
+                    </div>
+                </div>
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3>Recent Rebels</h3>
+                    </div>
+                    <div class="trending-item" onclick="showProfile('jamie')">
+                        <div class="trending-tag">
+                            <i class="fas fa-user"></i>
+                            <span>Jamie "CodeBreaker" Wilson</span>
+                        </div>
+                        <div class="trending-stats">Former FAANG Engineer</div>
+                    </div>
+                    <div class="trending-item" onclick="showProfile('taylor')">
+                        <div class="trending-tag">
+                            <i class="fas fa-user"></i>
+                            <span>Taylor "FreeSpirit" Davis</span>
+                        </div>
+                        <div class="trending-stats">Ex-Consultant, Now Travel Blogger</div>
+                    </div>
+                    <div class="trending-item" onclick="showProfile('riley')">
+                        <div class="trending-tag">
+                            <i class="fas fa-user"></i>
+                            <span>Riley "ZenMaster" Thompson</span>
+                        </div>
+                        <div class="trending-stats">Corporate Lawyer to Yoga Instructor</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <!-- Additional pages (network, jobs, messaging, etc.) would go here, following the same structure -->
+</body>
+</html>
