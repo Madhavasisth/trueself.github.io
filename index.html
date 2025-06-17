@@ -5,320 +5,4431 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LinkedOut - The Anti-Network</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* CSS Variables for Themes */
+        :root {
+            /* Light Theme */
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e9eff5;
+            --text-primary: #1d2226;
+            --text-secondary: #5e666e;
+            --text-tertiary: #8d959c;
+            --border-color: #e0e5eb;
+            --primary: #ff5a5f;
+            --primary-hover: #e04a4f;
+            --secondary: #5c6bc0;
+            --accent: #ffca28;
+            --success: #4caf50;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --profile-banner: linear-gradient(to right, #ff5a5f, #ff8a87);
+            --profile-avatar: linear-gradient(45deg, #ff5a5f, #ff8a87);
+        }
+
+        .dark-theme {
+            /* Dark Theme */
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f0f0f0;
+            --text-secondary: #cccccc;
+            --text-tertiary: #aaaaaa;
+            --border-color: #333333;
+            --primary: #ff5a5f;
+            --primary-hover: #ff7a7f;
+            --secondary: #7986cb;
+            --accent: #ffd54f;
+            --success: #66bb6a;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+            --profile-banner: linear-gradient(to right, #ff5a5f, #d8434d);
+            --profile-avatar: linear-gradient(45deg, #d8434d, #ff5a5f);
+        }
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: var(--bg-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--header-shadow);
+        }
+
+        .navbar-left, .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+            background-color: var(--bg-tertiary);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-tertiary);
+            border-radius: 20px;
+            padding: 5px 15px;
+            width: 300px;
+        }
+
+        .search-container i {
+            color: var(--text-tertiary);
+            margin-right: 8px;
+        }
+
+        .search-container input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            width: 100%;
+            outline: none;
+            padding: 8px 0;
+        }
+
+        .nav-icon {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .nav-icon:hover {
+            color: var(--primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+            cursor: pointer;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+        }
+
+        /* Container Layout */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            gap: 20px;
+            padding: 0 15px;
+        }
+
+        .sidebar, .right-sidebar {
+            flex: 0 0 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .feed {
+            flex: 1;
+        }
+
+        /* Page Styles */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* User Card */
+        .user-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+            margin: 0 auto 15px;
+        }
+
+        .user-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .user-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Sidebar Items */
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-item:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary);
+        }
+
+        .sidebar-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Feed Header */
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .feed-header h2 {
+            color: var(--primary);
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Profiles Grid */
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-banner {
+            height: 80px;
+            background: var(--profile-banner);
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--bg-secondary);
+            margin: -40px auto 10px;
+            background: var(--profile-avatar);
+            position: relative;
+        }
+
+        .profile-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .profile-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .profile-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .profile-bio {
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .connect-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .connect-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .message-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .message-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Right Sidebar Widgets */
+        .widget, .ad-container {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .widget-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .widget-header h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .trending-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .trending-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .trending-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .trending-tag i {
+            color: var(--primary);
+        }
+
+        .trending-tag span {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .trending-stats {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            padding-left: 28px;
+        }
+
+        .ad-container {
+            background: var(--profile-banner);
+            color: white;
+            padding: 20px;
+        }
+
+        .ad-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .ad-content p {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .ad-btn {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ad-btn:hover {
+            background-color: var(--bg-tertiary);
+            transform: scale(1.05);
+        }
+
+        /* Post Feed */
+        .post-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .create-post {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .create-post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .create-post-header .profile-avatar {
+            width: 50px;
+            height: 50px;
+            margin: 0;
+        }
+
+        .post-input {
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 20px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            width: 100%;
+            resize: none;
+            outline: none;
+            height: 60px;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .media-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .media-option {
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .media-option:hover {
+            color: var(--primary);
+        }
+
+        .post-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .post {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .post-author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+        }
+
+        .post-author-info {
+            flex: 1;
+        }
+
+        .post-author-name {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .post-author-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .post-time {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+        }
+
+        .post-actions-row {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+        }
+
+        .post-action:hover {
+            color: var(--primary);
+        }
+
+        /* Profile Page */
+        .profile-header {
+            background: var(--profile-banner);
+            border-radius: 10px 10px 0 0;
+            height: 200px;
+            position: relative;
+            margin-bottom: 80px;
+        }
+
+        .profile-avatar-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid var(--bg-secondary);
+            position: absolute;
+            bottom: -75px;
+            left: 30px;
+            background: var(--profile-avatar);
+        }
+
+        .profile-details {
+            background-color: var(--bg-secondary);
+            border-radius: 0 0 10px 10px;
+            padding: 100px 30px 30px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .profile-title {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .profile-bio {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .profile-stats-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .stat-value-large {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label-large {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .profile-section {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Network Page */
+        .connections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .connection-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .connection-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+            margin: 0 auto 10px;
+        }
+
+        .connection-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .connection-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar, .right-sidebar {
+                flex: 1;
+            }
+
+            .profiles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .profiles-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profiles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .navbar-right {
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="navbar-left">
-            <a href="#" class="logo" onclick="showPage('home')">
-                <i class="fas fa-skull"></i>
-                <span>LinkedOut</span>
-            </a>
-            <div class="nav-links">
-                <a href="#" class="nav-link active" onclick="showPage('home')">Feed</a>
-                <a href="#" class="nav-link" onclick="showPage('network')">Network</a>
-                <a href="#" class="nav-link" onclick="showPage('jobs')">Jobs</a>
-                <a href="#" class="nav-link" onclick="showPage('messaging')">Chat</a>
-            </div>
-        </div>
-        <div class="search-container">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search for rebels...">
-        </div>
-        <div class="navbar-right">
-            <div class="nav-icon">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">3</span>
-            </div>
-            <div class="nav-icon">
-                <i class="fas fa-comment-alt"></i>
-                <span class="notification-badge">7</span>
-            </div>
-            <div class="profile-pic" onclick="showPage('profile')"></div>
-        </div>
-    </nav>
-
-    <!-- Home Page -->
-    <div id="home" class="page active">
-        <div class="container">
-            <!-- Left Sidebar -->
-            <aside class="sidebar">
-                <div class="user-card">
-                    <div class="profile-img"></div>
-                    <h3>Alex "Renegade" Johnson</h3>
-                    <p>Corporate Escapee | Tech Industry Critic</p>
-                    <div class="stats">
-                        <div class="stat">
-                            <div class="stat-value">328</div>
-                            <div class="stat-label">Connections</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">1.2K</div>
-                            <div class="stat-label">Followers</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="#" class="sidebar-item" onclick="showPage('network')">
-                    <i class="fas fa-user-friends"></i>
-                    <span>My Network</span>
-                </a>
-                <a href="#" class="sidebar-item" onclick="showPage('jobs')">
-                    <i class="fas fa-briefcase"></i>
-                    <span>Job Alerts</span>
-                </a>
-                <a href="#" class="sidebar-item">
-                    <i class="fas fa-bookmark"></i>
-                    <span>Saved Posts</span>
-                </a>
-                <a href="#" class="sidebar-item">
-                    <i class="fas fa-users"></i>
-                    <span>Groups</span>
-                </a>
-                <a href="#" class="sidebar-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Events</span>
-                </a>
-                <a href="#" class="sidebar-item">
-                    <i class="fas fa-hashtag"></i>
-                    <span>Followed Hashtags</span>
-                </a>
-            </aside>
-            <!-- Main Feed -->
-            <main class="feed">
-                <div class="feed-header">
-                    <h2>Rebel Profiles</h2>
-                    <div class="filter-options">
-                        <button class="filter-btn active">All</button>
-                        <button class="filter-btn">Tech</button>
-                        <button class="filter-btn">Creative</button>
-                        <button class="filter-btn">Finance</button>
-                    </div>
-                </div>
-                <!-- Profiles Section -->
-                <div class="profiles-container">
-                    <div class="profiles-grid">
-                        <!-- Profile 1 -->
-                        <a href="#" class="profile-card" onclick="showProfile('sarah')">
-                            <div class="profile-banner"></div>
-                            <div class="profile-avatar"></div>
-                            <div class="profile-info">
-                                <h3>Sarah "Firewall" Williams</h3>
-                                <div class="profile-title">Security Researcher | Ethical Hacker</div>
-                                <div class="profile-bio">Exposing corporate security flaws and fighting for digital privacy rights</div>
-                                <div class="profile-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-number">482</div>
-                                        <div class="stat-label">Connections</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">87</div>
-                                        <div class="stat-label">Posts</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">24</div>
-                                        <div class="stat-label">Projects</div>
-                                    </div>
-                                </div>
-                                <div class="action-buttons">
-                                    <button class="action-btn connect-btn">Connect</button>
-                                    <button class="action-btn message-btn">Message</button>
-                                </div>
-                            </div>
-                        </a>
-                        <!-- Profile 2 -->
-                        <a href="#" class="profile-card" onclick="showProfile('marcus')">
-                            <div class="profile-banner" style="background: linear-gradient(to right, #ff9966, #ffcc00);"></div>
-                            <div class="profile-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
-                            <div class="profile-info">
-                                <h3>Marcus "Vanguard" Chen</h3>
-                                <div class="profile-title">Blockchain Developer | DeFi Architect</div>
-                                <div class="profile-bio">Building decentralized alternatives to traditional finance systems</div>
-                                <div class="profile-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-number">721</div>
-                                        <div class="stat-label">Connections</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">42</div>
-                                        <div class="stat-label">Posts</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">16</div>
-                                        <div class="stat-label">Projects</div>
-                                    </div>
-                                </div>
-                                <div class="action-buttons">
-                                    <button class="action-btn connect-btn">Connect</button>
-                                    <button class="action-btn message-btn">Message</button>
-                                </div>
-                            </div>
-                        </a>
-                        <!-- Profile 3 -->
-                        <a href="#" class="profile-card" onclick="showProfile('zara')">
-                            <div class="profile-banner" style="background: linear-gradient(to right, #ff4d4d, #ff66cc);"></div>
-                            <div class="profile-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
-                            <div class="profile-info">
-                                <h3>Zara "Phantom" Rodriguez</h3>
-                                <div class="profile-title">Digital Nomad | Remote Work Advocate</div>
-                                <div class="profile-bio">Helping professionals escape the 9-to-5 grind and reclaim their time</div>
-                                <div class="profile-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-number">1.2K</div>
-                                        <div class="stat-label">Connections</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">156</div>
-                                        <div class="stat-label">Posts</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">32</div>
-                                        <div class="stat-label">Projects</div>
-                                    </div>
-                                </div>
-                                <div class="action-buttons">
-                                    <button class="action-btn connect-btn">Connect</button>
-                                    <button class="action-btn message-btn">Message</button>
-                                </div>
-                            </div>
-                        </a>
-                        <!-- Profile 4 -->
-                        <a href="#" class="profile-card" onclick="showProfile('elijah')">
-                            <div class="profile-banner" style="background: linear-gradient(to right, #4dff4d, #66ffff);"></div>
-                            <div class="profile-avatar" style="background: linear-gradient(45deg, #66ffff, #4dff4d);"></div>
-                            <div class="profile-info">
-                                <h3>Elijah "Cypher" Kim</h3>
-                                <div class="profile-title">AI Ethics Researcher | Algorithm Auditor</div>
-                                <div class="profile-bio">Fighting biased algorithms and unethical AI implementations</div>
-                                <div class="profile-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-number">893</div>
-                                        <div class="stat-label">Connections</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">64</div>
-                                        <div class="stat-label">Posts</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">19</div>
-                                        <div class="stat-label">Projects</div>
-                                    </div>
-                                </div>
-                                <div class="action-buttons">
-                                    <button class="action-btn connect-btn">Connect</button>
-                                    <button class="action-btn message-btn">Message</button>
-                                </div>
-                            </div>
-                        </a>
-                        <!-- Profile 5 -->
-                        <a href="#" class="profile-card" onclick="showProfile('nina')">
-                            <div class="profile-banner" style="background: linear-gradient(to right, #9966ff, #cc66ff);"></div>
-                            <div class="profile-avatar" style="background: linear-gradient(45deg, #cc66ff, #9966ff);"></div>
-                            <div class="profile-info">
-                                <h3>Nina "Nexus" Parker</h3>
-                                <div class="profile-title">Mental Health Advocate | Corporate Wellness Critic</div>
-                                <div class="profile-bio">Challenging toxic workplace cultures and promoting mental wellbeing</div>
-                                <div class="profile-stats">
-                                    <div class="stat-item">
-                                        <div class="stat-number">2.4K</div>
-                                        <div class="stat-label">Connections</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">214</div>
-                                        <div class="stat-label">Posts</div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <div class="stat-number">28</div>
-                                        <div class="stat-label">Projects</div>
-                                    </div>
-                                </div>
-                                <div class="action-buttons">
-                                    <button class="action-btn connect-btn">Connect</button>
-                                    <button class="action-btn message-btn">Message</button>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </main>
-            <!-- Right Sidebar -->
-            <aside class="right-sidebar">
-                <div class="widget">
-                    <div class="widget-header">
-                        <h3>Rebel Trends</h3>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-tag">
-                            <i class="fas fa-hashtag"></i>
-                            <span>AntiWorkMovement</span>
-                        </div>
-                        <div class="trending-stats">4,218 posts today</div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-tag">
-                            <i class="fas fa-hashtag"></i>
-                            <span>QuietQuitting</span>
-                        </div>
-                        <div class="trending-stats">3,871 posts today</div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-tag">
-                            <i class="fas fa-hashtag"></i>
-                            <span>DigitalNomadLife</span>
-                        </div>
-                        <div class="trending-stats">2,943 posts today</div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-tag">
-                            <i class="fas fa-hashtag"></i>
-                            <span>CorporateEscapees</span>
-                        </div>
-                        <div class="trending-stats">2,516 posts today</div>
-                    </div>
-                    <div class="trending-item">
-                        <div class="trending-tag">
-                            <i class="fas fa-hashtag"></i>
-                            <span>BurnoutRecovery</span>
-                        </div>
-                        <div class="trending-stats">1,982 posts today</div>
-                    </div>
-                </div>
-                <div class="ad-container">
-                    <div class="ad-content">
-                        <h3>Corporate Burnout?</h3>
-                        <p>Join our community of professionals who've escaped the 9-to-5 grind and reclaimed their lives.</p>
-                        <button class="ad-btn">Learn the Secrets</button>
-                    </div>
-                </div>
-                <div class="widget">
-                    <div class="widget-header">
-                        <h3>Recent Rebels</h3>
-                    </div>
-                    <div class="trending-item" onclick="showProfile('jamie')">
-                        <div class="trending-tag">
-                            <i class="fas fa-user"></i>
-                            <span>Jamie "CodeBreaker" Wilson</span>
-                        </div>
-                        <div class="trending-stats">Former FAANG Engineer</div>
-                    </div>
-                    <div class="trending-item" onclick="showProfile('taylor')">
-                        <div class="trending-tag">
-                            <i class="fas fa-user"></i>
-                            <span>Taylor "FreeSpirit" Davis</span>
-                        </div>
-                        <div class="trending-stats">Ex-Consultant, Now Travel Blogger</div>
-                    </div>
-                    <div class="trending-item" onclick="showProfile('riley')">
-                        <div class="trending-tag">
-                            <i class="fas fa-user"></i>
-                            <span>Riley "ZenMaster" Thompson</span>
-                        </div>
-                        <div class="trending-stats">Corporate Lawyer to Yoga Instructor</div>
-                    </div>
-                </div>
-            </aside>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <a href="#" class="logo" onclick="showPage('home')">
+            <i class="fas fa-skull"></i>
+            <span>LinkedOut</span>
+        </a>
+        <div class="nav-links">
+            <a href="#" class="nav-link active" onclick="showPage('home')">Feed</a>
+            <a href="#" class="nav-link" onclick="showPage('network')">Network</a>
+            <a href="#" class="nav-link" onclick="showPage('jobs')">Jobs</a>
+            <a href="#" class="nav-link" onclick="showPage('messaging')">Chat</a>
         </div>
     </div>
-    <!-- Additional pages (network, jobs, messaging, etc.) would go here, following the same structure -->
+    <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search for rebels..." id="searchInput">
+    </div>
+    <div class="navbar-right">
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+        <div class="nav-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+        </div>
+        <div class="nav-icon">
+            <i class="fas fa-comment-alt"></i>
+            <span class="notification-badge">7</span>
+        </div>
+        <div class="profile-pic" onclick="showPage('profile')"></div>
+    </div>
+</nav>
+
+<!-- Home Page -->
+<div id="home" class="page active">
+    <div class="container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="user-card">
+                <div class="profile-img"></div>
+                <h3>Alex "Renegade" Johnson</h3>
+                <p>Corporate Escapee | Tech Industry Critic</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">328</div>
+                        <div class="stat-label">Connections</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">1.2K</div>
+                        <div class="stat-label">Followers</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="sidebar-item" onclick="showPage('network')">
+                <i class="fas fa-user-friends"></i>
+                <span>My Network</span>
+            </a>
+            <a href="#" class="sidebar-item" onclick="showPage('jobs')">
+                <i class="fas fa-briefcase"></i>
+                <span>Job Alerts</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-bookmark"></i>
+                <span>Saved Posts</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-users"></i>
+                <span>Groups</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-hashtag"></i>
+                <span>Followed Hashtags</span>
+            </a>
+        </aside>
+        <!-- Main Feed -->
+        <main class="feed">
+            <div class="feed-header">
+                <h2>Rebel Feed</h2>
+                <div class="filter-options">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Tech</button>
+                    <button class="filter-btn">Creative</button>
+                    <button class="filter-btn">Finance</button>
+                </div>
+            </div>
+
+            <!-- Create Post -->
+            <div class="create-post">
+                <div class="create-post-header">
+                    <div class="profile-avatar"></div>
+                    <textarea class="post-input" placeholder="Share your corporate horror story or anti-work wisdom..."></textarea>
+                </div>
+                <div class="post-actions">
+                    <div class="media-options">
+                        <div class="media-option">
+                            <i class="fas fa-image"></i> Photo
+                        </div>
+                        <div class="media-option">
+                            <i class="fas fa-video"></i> Video
+                        </div>
+                        <div class="media-option">
+                            <i class="fas fa-calendar-alt"></i> Event
+                        </div>
+                    </div>
+                    <button class="post-btn">Post</button>
+                </div>
+            </div>
+
+            <!-- Posts Feed -->
+            <div class="post-feed">
+                <!-- Post 1 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Sarah "Firewall" Williams</div>
+                            <div class="post-author-title">Security Researcher | Ethical Hacker</div>
+                        </div>
+                        <div class="post-time">2h ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Just exposed another corporate "security" system that was basically a welcome mat for hackers. The CISO's face when I showed how easy it was to access their entire customer database... priceless! 😂</p>
+                        <p>#CorporateSecurityTheater #EthicalHacking #LinkedOut</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 128 likes</div>
+                        <div>💬 42 comments</div>
+                        <div>🔄 19 shares</div>
+                    </div>
+                    <div class="post-actions-row">
+                        <div class="post-action">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-comment"></i> Comment
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share"></i> Share
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Marcus "Vanguard" Chen</div>
+                            <div class="post-author-title">Blockchain Developer | DeFi Architect</div>
+                        </div>
+                        <div class="post-time">5h ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Corporate finance departments hate this one simple trick: decentralized autonomous organizations. Why have middle managers when code can do the job better? 🤖</p>
+                        <p>Just launched our new DAO for freelance developers. Join us and escape the corporate overlords!</p>
+                        <p>#DeFiRevolution #DAOs #CorporateEscape</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 217 likes</div>
+                        <div>💬 63 comments</div>
+                        <div>🔄 32 shares</div>
+                    </div>
+                    <div class="post-actions-row">
+                        <div class="post-action">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-comment"></i> Comment
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share"></i> Share
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 3 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Zara "Phantom" Rodriguez</div>
+                            <div class="post-author-title">Digital Nomad | Remote Work Advocate</div>
+                        </div>
+                        <div class="post-time">1d ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Woke up to this view in Bali while my former colleagues are stuck in another pointless 8am Zoom meeting. Remember: "Remote work" shouldn't mean chaining yourself to a laptop from 9-5. True freedom is location AND time independence!</p>
+                        <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Bali beach" style="width:100%; border-radius:10px; margin-top:10px;">
+                        <p>#DigitalNomad #WorkFromAnywhere #CorporateEscape #BaliLife</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 342 likes</div>
+                        <div>💬 87 comments</div>
+                        <div>🔄 45 shares</div>
+                    </div>
+                    <div class="post-actions-row">
+                        <div class="post-action">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-comment"></i> Comment
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share"></i> Share
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Rebel Trends</h3>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>AntiWorkMovement</span>
+                    </div>
+                    <div class="trending-stats">4,218 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>QuietQuitting</span>
+                    </div>
+                    <div class="trending-stats">3,871 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>DigitalNomadLife</span>
+                    </div>
+                    <div class="trending-stats">2,943 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>CorporateEscapees</span>
+                    </div>
+                    <div class="trending-stats">2,516 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>BurnoutRecovery</span>
+                    </div>
+                    <div class="trending-stats">1,982 posts today</div>
+                </div>
+            </div>
+            <div class="ad-container">
+                <div class="ad-content">
+                    <h3>Corporate Burnout?</h3>
+                    <p>Join our community of professionals who've escaped the 9-to-5 grind and reclaimed their lives.</p>
+                    <button class="ad-btn">Learn the Secrets</button>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Recent Rebels</h3>
+                </div>
+                <div class="trending-item" onclick="showProfile('jamie')">
+                    <div class="trending-tag">
+                        <i class="fas fa-user"></i>
+                        <span>Jamie "CodeBreaker" Wilson</span>
+                    </div>
+                    <div class="trending-stats">Former FAANG Engineer</div>
+                </div>
+                <div class="trending-item" onclick="showProfile('taylor')">
+                    <div class="trending-tag">
+                        <i class="fas fa-user"></i>
+                        <span>Taylor "FreeSpirit" Davis</span>
+                    </div>
+                    <div class="trending-stats">Ex-Consultant, Now Travel Blogger</div>
+                </div>
+                <div class="trending-item" onclick="showProfile('riley')">
+                    <div class="trending-tag">
+                        <i class="fas fa-user"></i>
+                        <span>Riley "ZenMaster" Thompson</span>
+                    </div>
+                    <div class="trending-stats">Corporate Lawyer to Yoga Instructor</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<!-- Profile Page -->
+<div id="profile" class="page">
+    <div class="container">
+        <div class="profile-header"></div>
+        <div class="profile-avatar-large"></div>
+        <div class="profile-details">
+            <h1 class="profile-name">Alex "Renegade" Johnson</h1>
+            <div class="profile-title">Corporate Escapee | Tech Industry Critic</div>
+            <div class="profile-bio">
+                <p>After 10 years climbing the corporate ladder only to realize it was leaning against the wrong wall, I jumped. Now I help others escape the soul-crushing grind of corporate life and find meaningful work that doesn't require sacrificing your humanity at the altar of "productivity."</p>
+                <p>Specializing in exposing toxic workplace cultures, meaningless KPIs, and the illusion of the "dream job" sold to us by career counselors who've never worked a real job in their lives.</p>
+            </div>
+
+            <div class="profile-stats-row">
+                <div class="profile-stat">
+                    <div class="stat-value-large">328</div>
+                    <div class="stat-label-large">Connections</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="stat-value-large">1.2K</div>
+                    <div class="stat-label-large">Followers</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="stat-value-large">87</div>
+                    <div class="stat-label-large">Posts</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="stat-value-large">24</div>
+                    <div class="stat-label-large">Projects</div>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="connect-btn">Connect</button>
+                <button class="message-btn">Message</button>
+            </div>
+
+            <div class="profile-section">
+                <h3 class="section-title">Experience</h3>
+                <div class="experience-item">
+                    <h4>Corporate Escape Artist</h4>
+                    <p>Self-employed · 2019 - Present</p>
+                    <p>Helping professionals break free from golden handcuffs and find work that doesn't make them question the meaning of life every Sunday evening.</p>
+                </div>
+                <div class="experience-item">
+                    <h4>Senior Product Manager</h4>
+                    <p>TechCorp Inc · 2014 - 2019</p>
+                    <p>Managed products nobody needed to solve problems that didn't exist. Excelled at PowerPoint and corporate buzzword bingo.</p>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3 class="section-title">Recent Activity</h3>
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Alex "Renegade" Johnson</div>
+                            <div class="post-author-title">Corporate Escapee | Tech Industry Critic</div>
+                        </div>
+                        <div class="post-time">1d ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Just had a former colleague reach out asking how I "escaped." Sent them my "Corporate Exit Strategy" guide. Remember folks: the best time to plan your escape was yesterday. The second best time is today!</p>
+                        <p>#CorporateEscape #WorkReform #TakeBackYourLife</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 142 likes</div>
+                        <div>💬 28 comments</div>
+                        <div>🔄 15 shares</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Network Page -->
+<div id="network" class="page">
+    <div class="container">
+        <div class="feed">
+            <div class="feed-header">
+                <h2>My Rebel Network</h2>
+            </div>
+
+            <div class="connections-grid">
+                <!-- Connection 1 -->
+                <div class="connection-card">
+                    <div class="connection-avatar"></div>
+                    <div class="connection-name">Sarah "Firewall" Williams</div>
+                    <div class="connection-title">Security Researcher</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 2 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
+                    <div class="connection-name">Marcus "Vanguard" Chen</div>
+                    <div class="connection-title">Blockchain Developer</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 3 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
+                    <div class="connection-name">Zara "Phantom" Rodriguez</div>
+                    <div class="connection-title">Digital Nomad</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 4 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #66ffff, #4dff4d);"></div>
+                    <div class="connection-name">Elijah "Cypher" Kim</div>
+                    <div class="connection-title">AI Ethics Researcher</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 5 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #cc66ff, #9966ff);"></div>
+                    <div class="connection-name">Nina "Nexus" Parker</div>
+                    <div class="connection-title">Mental Health Advocate</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 6 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #ff9966, #ffcc00);"></div>
+                    <div class="connection-name">Jamie "CodeBreaker" Wilson</div>
+                    <div class="connection-title">Ex-FAANG Engineer</div>
+                    <button class="message-btn">Message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Jobs Page -->
+<div id="jobs" class="page">
+    <div class="container">
+        <div class="feed">
+            <div class="feed-header">
+                <h2>Anti-Job Board</h2>
+                <div class="filter-options">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Remote</button>
+                    <button class="filter-btn">Flexible</button>
+                    <button class="filter-btn">No Managers</button>
+                </div>
+            </div>
+
+            <div class="job-list">
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #66ffff, #4dff4d);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Decentralized Dev Collective</div>
+                            <div class="post-author-title">Blockchain · DAO · Remote</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3>Smart Contract Developer</h3>
+                        <p>Help us build the future of work - no bosses, no pointless meetings, just code and freedom. We're a DAO looking for Solidity developers who want to escape corporate tech.</p>
+                        <p>✅ 100% remote</p>
+                        <p>✅ Flexible hours</p>
+                        <p>✅ Paid in crypto</p>
+                        <p>❌ No corporate BS</p>
+                    </div>
+                    <div class="post-actions-row">
+                        <button class="connect-btn">Apply Now</button>
+                        <button class="message-btn">Save Job</button>
+                    </div>
+                </div>
+
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Nomad Creatives</div>
+                            <div class="post-author-title">Design · Remote · Worldwide</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3>UX/UI Designer (Digital Nomad)</h3>
+                        <p>Design beautiful interfaces from anywhere in the world. We care about your work, not where or when you do it. Must have passport and love of adventure.</p>
+                        <p>✅ Work from anywhere</p>
+                        <p>✅ Results-based evaluation</p>
+                        <p>✅ Quarterly team retreats (tropical locations)</p>
+                        <p>❌ No time tracking</p>
+                    </div>
+                    <div class="post-actions-row">
+                        <button class="connect-btn">Apply Now</button>
+                        <button class="message-btn">Save Job</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messaging Page -->
+<div id="messaging" class="page">
+    <div class="container">
+        <div class="feed">
+            <div class="feed-header">
+                <h2>Rebel Chat</h2>
+            </div>
+
+            <div class="post">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div class="chat-partner">
+                            <div class="post-author-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
+                            <div class="post-author-name">Marcus "Vanguard" Chen</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages">
+                        <div class="message received">
+                            <div class="message-content">
+                                Hey Alex, loved your last post about corporate surveillance culture. So true!
+                            </div>
+                            <div class="message-time">10:24 AM</div>
+                        </div>
+
+                        <div class="message sent">
+                            <div class="message-content">
+                                Thanks Marcus! Your DeFi project looks like the perfect antidote. How's it going?
+                            </div>
+                            <div class="message-time">10:26 AM</div>
+                        </div>
+
+                        <div class="message received">
+                            <div class="message-content">
+                                Amazing! We just onboarded our 100th member who escaped traditional finance. The revolution is happening one escapee at a time! 🔥
+                            </div>
+                            <div class="message-time">10:28 AM</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type your message...">
+                        <button class="connect-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Theme Toggle Functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+
+    // Check for saved theme preference or respect OS preference
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    } else if (currentTheme === 'light') {
+        document.body.classList.remove('dark-theme');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    } else if (prefersDarkScheme.matches) {
+        document.body.classList.add('dark-theme');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        themeIcon.classList.add('fa-moon');
+        localStorage.setItem('theme', 'light');
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('dark-theme')) {
+            document.body.classList.remove('dark-theme');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.body.classList.add('dark-theme');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+
+    // Page navigation
+    function showPage(pageId) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+
+        // Show the requested page
+        document.getElementById(pageId).classList.add('active');
+
+        // Update active nav link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        if(pageId === 'home') {
+            document.querySelector('.nav-link[onclick="showPage(\'home\')"]').classList.add('active');
+        }
+    }
+
+    // Profile viewing
+    function showProfile(profileId) {
+        // In a real app, this would show the specific profile
+        // For this demo, we'll just show the current user profile
+        showPage('profile');
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if(e.key === 'Enter') {
+            const query = this.value.toLowerCase();
+            if(query.includes('job') || query.includes('work')) {
+                showPage('jobs');
+            } else if(query.includes('network') || query.includes('connect')) {
+                showPage('network');
+            } else if(query.includes('chat') || query.includes('message')) {
+                showPage('messaging');
+            } else {
+                alert(`Searching for rebels matching: "${query}"`);
+            }
+        }
+    });
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedOut - The Anti-Network</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for Themes */
+        :root {
+            /* Light Theme */
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e9eff5;
+            --text-primary: #1d2226;
+            --text-secondary: #5e666e;
+            --text-tertiary: #8d959c;
+            --border-color: #e0e5eb;
+            --primary: #ff5a5f;
+            --primary-hover: #e04a4f;
+            --secondary: #5c6bc0;
+            --accent: #ffca28;
+            --success: #4caf50;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --profile-banner: linear-gradient(to right, #ff5a5f, #ff8a87);
+            --profile-avatar: linear-gradient(45deg, #ff5a5f, #ff8a87);
+        }
+
+        .dark-theme {
+            /* Dark Theme */
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f0f0f0;
+            --text-secondary: #cccccc;
+            --text-tertiary: #aaaaaa;
+            --border-color: #333333;
+            --primary: #ff5a5f;
+            --primary-hover: #ff7a7f;
+            --secondary: #7986cb;
+            --accent: #ffd54f;
+            --success: #66bb6a;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+            --profile-banner: linear-gradient(to right, #ff5a5f, #d8434d);
+            --profile-avatar: linear-gradient(45deg, #d8434d, #ff5a5f);
+        }
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: var(--bg-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--header-shadow);
+        }
+
+        .navbar-left, .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+            background-color: var(--bg-tertiary);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-tertiary);
+            border-radius: 20px;
+            padding: 5px 15px;
+            width: 300px;
+        }
+
+        .search-container i {
+            color: var(--text-tertiary);
+            margin-right: 8px;
+        }
+
+        .search-container input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            width: 100%;
+            outline: none;
+            padding: 8px 0;
+        }
+
+        .nav-icon {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .nav-icon:hover {
+            color: var(--primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+            cursor: pointer;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+        }
+
+        /* Container Layout */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            gap: 20px;
+            padding: 0 15px;
+        }
+
+        .sidebar, .right-sidebar {
+            flex: 0 0 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .feed {
+            flex: 1;
+        }
+
+        /* Page Styles */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* User Card */
+        .user-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+            margin: 0 auto 15px;
+        }
+
+        .user-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .user-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Sidebar Items */
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-item:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary);
+        }
+
+        .sidebar-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Feed Header */
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .feed-header h2 {
+            color: var(--primary);
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Profiles Grid */
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-banner {
+            height: 80px;
+            background: var(--profile-banner);
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--bg-secondary);
+            margin: -40px auto 10px;
+            background: var(--profile-avatar);
+            position: relative;
+        }
+
+        .profile-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .profile-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .profile-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .profile-bio {
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .connect-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .connect-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .message-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .message-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Right Sidebar Widgets */
+        .widget, .ad-container {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .widget-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .widget-header h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .trending-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .trending-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .trending-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .trending-tag i {
+            color: var(--primary);
+        }
+
+        .trending-tag span {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .trending-stats {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            padding-left: 28px;
+        }
+
+        .ad-container {
+            background: var(--profile-banner);
+            color: white;
+            padding: 20px;
+        }
+
+        .ad-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .ad-content p {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .ad-btn {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ad-btn:hover {
+            background-color: var(--bg-tertiary);
+            transform: scale(1.05);
+        }
+
+        /* Post Feed */
+        .post-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .create-post {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .create-post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .create-post-header .profile-avatar {
+            width: 50px;
+            height: 50px;
+            margin: 0;
+        }
+
+        .post-input {
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 20px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            width: 100%;
+            resize: none;
+            outline: none;
+            height: 60px;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .media-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .media-option {
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .media-option:hover {
+            color: var(--primary);
+        }
+
+        .post-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .post {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .post-author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+        }
+
+        .post-author-info {
+            flex: 1;
+        }
+
+        .post-author-name {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .post-author-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .post-time {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+        }
+
+        .post-actions-row {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+        }
+
+        .post-action:hover {
+            color: var(--primary);
+        }
+
+        /* Profile Page */
+        .profile-header {
+            background: var(--profile-banner);
+            border-radius: 10px 10px 0 0;
+            height: 200px;
+            position: relative;
+            margin-bottom: 80px;
+        }
+
+        .profile-avatar-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid var(--bg-secondary);
+            position: absolute;
+            bottom: -75px;
+            left: 30px;
+            background: var(--profile-avatar);
+        }
+
+        .profile-details {
+            background-color: var(--bg-secondary);
+            border-radius: 0 0 10px 10px;
+            padding: 100px 30px 30px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .profile-title {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .profile-bio {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .profile-stats-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .stat-value-large {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label-large {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .profile-section {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Network Page */
+        .connections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .connection-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .connection-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+            margin: 0 auto 10px;
+        }
+
+        .connection-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .connection-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar, .right-sidebar {
+                flex: 1;
+            }
+
+            .profiles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .profiles-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profiles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .navbar-right {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <a href="#" class="logo" onclick="showPage('home')">
+            <i class="fas fa-skull"></i>
+            <span>LinkedOut</span>
+        </a>
+        <div class="nav-links">
+            <a href="#" class="nav-link active" onclick="showPage('home')">Feed</a>
+            <a href="#" class="nav-link" onclick="showPage('network')">Network</a>
+            <a href="#" class="nav-link" onclick="showPage('jobs')">Jobs</a>
+            <a href="#" class="nav-link" onclick="showPage('messaging')">Chat</a>
+        </div>
+    </div>
+    <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search for rebels..." id="searchInput">
+    </div>
+    <div class="navbar-right">
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+        <div class="nav-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+        </div>
+        <div class="nav-icon">
+            <i class="fas fa-comment-alt"></i>
+            <span class="notification-badge">7</span>
+        </div>
+        <div class="profile-pic" onclick="showPage('profile')"></div>
+    </div>
+</nav>
+
+<!-- Home Page -->
+<div id="home" class="page active">
+    <div class="container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="user-card">
+                <div class="profile-img"></div>
+                <h3>Alex "Renegade" Johnson</h3>
+                <p>Corporate Escapee | Tech Industry Critic</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">328</div>
+                        <div class="stat-label">Connections</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">1.2K</div>
+                        <div class="stat-label">Followers</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="sidebar-item" onclick="showPage('network')">
+                <i class="fas fa-user-friends"></i>
+                <span>My Network</span>
+            </a>
+            <a href="#" class="sidebar-item" onclick="showPage('jobs')">
+                <i class="fas fa-briefcase"></i>
+                <span>Job Alerts</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-bookmark"></i>
+                <span>Saved Posts</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-users"></i>
+                <span>Groups</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-hashtag"></i>
+                <span>Followed Hashtags</span>
+            </a>
+        </aside>
+        <!-- Main Feed -->
+        <main class="feed">
+            <div class="feed-header">
+                <h2>Rebel Feed</h2>
+                <div class="filter-options">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Tech</button>
+                    <button class="filter-btn">Creative</button>
+                    <button class="filter-btn">Finance</button>
+                </div>
+            </div>
+
+            <!-- Create Post -->
+            <div class="create-post">
+                <div class="create-post-header">
+                    <div class="profile-avatar"></div>
+                    <textarea class="post-input" placeholder="Share your corporate horror story or anti-work wisdom..."></textarea>
+                </div>
+                <div class="post-actions">
+                    <div class="media-options">
+                        <div class="media-option">
+                            <i class="fas fa-image"></i> Photo
+                        </div>
+                        <div class="media-option">
+                            <i class="fas fa-video"></i> Video
+                        </div>
+                        <div class="media-option">
+                            <i class="fas fa-calendar-alt"></i> Event
+                        </div>
+                    </div>
+                    <button class="post-btn">Post</button>
+                </div>
+            </div>
+
+            <!-- Posts Feed -->
+            <div class="post-feed">
+                <!-- Post 1 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Sarah "Firewall" Williams</div>
+                            <div class="post-author-title">Security Researcher | Ethical Hacker</div>
+                        </div>
+                        <div class="post-time">2h ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Just exposed another corporate "security" system that was basically a welcome mat for hackers. The CISO's face when I showed how easy it was to access their entire customer database... priceless! 😂</p>
+                        <p>#CorporateSecurityTheater #EthicalHacking #LinkedOut</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 128 likes</div>
+                        <div>💬 42 comments</div>
+                        <div>🔄 19 shares</div>
+                    </div>
+                    <div class="post-actions-row">
+                        <div class="post-action">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-comment"></i> Comment
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share"></i> Share
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Marcus "Vanguard" Chen</div>
+                            <div class="post-author-title">Blockchain Developer | DeFi Architect</div>
+                        </div>
+                        <div class="post-time">5h ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Corporate finance departments hate this one simple trick: decentralized autonomous organizations. Why have middle managers when code can do the job better? 🤖</p>
+                        <p>Just launched our new DAO for freelance developers. Join us and escape the corporate overlords!</p>
+                        <p>#DeFiRevolution #DAOs #CorporateEscape</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 217 likes</div>
+                        <div>💬 63 comments</div>
+                        <div>🔄 32 shares</div>
+                    </div>
+                    <div class="post-actions-row">
+                        <div class="post-action">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-comment"></i> Comment
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share"></i> Share
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 3 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Zara "Phantom" Rodriguez</div>
+                            <div class="post-author-title">Digital Nomad | Remote Work Advocate</div>
+                        </div>
+                        <div class="post-time">1d ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Woke up to this view in Bali while my former colleagues are stuck in another pointless 8am Zoom meeting. Remember: "Remote work" shouldn't mean chaining yourself to a laptop from 9-5. True freedom is location AND time independence!</p>
+                        <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Bali beach" style="width:100%; border-radius:10px; margin-top:10px;">
+                        <p>#DigitalNomad #WorkFromAnywhere #CorporateEscape #BaliLife</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 342 likes</div>
+                        <div>💬 87 comments</div>
+                        <div>🔄 45 shares</div>
+                    </div>
+                    <div class="post-actions-row">
+                        <div class="post-action">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-comment"></i> Comment
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share"></i> Share
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Rebel Trends</h3>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>AntiWorkMovement</span>
+                    </div>
+                    <div class="trending-stats">4,218 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>QuietQuitting</span>
+                    </div>
+                    <div class="trending-stats">3,871 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>DigitalNomadLife</span>
+                    </div>
+                    <div class="trending-stats">2,943 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>CorporateEscapees</span>
+                    </div>
+                    <div class="trending-stats">2,516 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>BurnoutRecovery</span>
+                    </div>
+                    <div class="trending-stats">1,982 posts today</div>
+                </div>
+            </div>
+            <div class="ad-container">
+                <div class="ad-content">
+                    <h3>Corporate Burnout?</h3>
+                    <p>Join our community of professionals who've escaped the 9-to-5 grind and reclaimed their lives.</p>
+                    <button class="ad-btn">Learn the Secrets</button>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Recent Rebels</h3>
+                </div>
+                <div class="trending-item" onclick="showProfile('jamie')">
+                    <div class="trending-tag">
+                        <i class="fas fa-user"></i>
+                        <span>Jamie "CodeBreaker" Wilson</span>
+                    </div>
+                    <div class="trending-stats">Former FAANG Engineer</div>
+                </div>
+                <div class="trending-item" onclick="showProfile('taylor')">
+                    <div class="trending-tag">
+                        <i class="fas fa-user"></i>
+                        <span>Taylor "FreeSpirit" Davis</span>
+                    </div>
+                    <div class="trending-stats">Ex-Consultant, Now Travel Blogger</div>
+                </div>
+                <div class="trending-item" onclick="showProfile('riley')">
+                    <div class="trending-tag">
+                        <i class="fas fa-user"></i>
+                        <span>Riley "ZenMaster" Thompson</span>
+                    </div>
+                    <div class="trending-stats">Corporate Lawyer to Yoga Instructor</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<!-- Profile Page -->
+<div id="profile" class="page">
+    <div class="container">
+        <div class="profile-header"></div>
+        <div class="profile-avatar-large"></div>
+        <div class="profile-details">
+            <h1 class="profile-name">Alex "Renegade" Johnson</h1>
+            <div class="profile-title">Corporate Escapee | Tech Industry Critic</div>
+            <div class="profile-bio">
+                <p>After 10 years climbing the corporate ladder only to realize it was leaning against the wrong wall, I jumped. Now I help others escape the soul-crushing grind of corporate life and find meaningful work that doesn't require sacrificing your humanity at the altar of "productivity."</p>
+                <p>Specializing in exposing toxic workplace cultures, meaningless KPIs, and the illusion of the "dream job" sold to us by career counselors who've never worked a real job in their lives.</p>
+            </div>
+
+            <div class="profile-stats-row">
+                <div class="profile-stat">
+                    <div class="stat-value-large">328</div>
+                    <div class="stat-label-large">Connections</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="stat-value-large">1.2K</div>
+                    <div class="stat-label-large">Followers</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="stat-value-large">87</div>
+                    <div class="stat-label-large">Posts</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="stat-value-large">24</div>
+                    <div class="stat-label-large">Projects</div>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="connect-btn">Connect</button>
+                <button class="message-btn">Message</button>
+            </div>
+
+            <div class="profile-section">
+                <h3 class="section-title">Experience</h3>
+                <div class="experience-item">
+                    <h4>Corporate Escape Artist</h4>
+                    <p>Self-employed · 2019 - Present</p>
+                    <p>Helping professionals break free from golden handcuffs and find work that doesn't make them question the meaning of life every Sunday evening.</p>
+                </div>
+                <div class="experience-item">
+                    <h4>Senior Product Manager</h4>
+                    <p>TechCorp Inc · 2014 - 2019</p>
+                    <p>Managed products nobody needed to solve problems that didn't exist. Excelled at PowerPoint and corporate buzzword bingo.</p>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3 class="section-title">Recent Activity</h3>
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Alex "Renegade" Johnson</div>
+                            <div class="post-author-title">Corporate Escapee | Tech Industry Critic</div>
+                        </div>
+                        <div class="post-time">1d ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Just had a former colleague reach out asking how I "escaped." Sent them my "Corporate Exit Strategy" guide. Remember folks: the best time to plan your escape was yesterday. The second best time is today!</p>
+                        <p>#CorporateEscape #WorkReform #TakeBackYourLife</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 142 likes</div>
+                        <div>💬 28 comments</div>
+                        <div>🔄 15 shares</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Network Page -->
+<div id="network" class="page">
+    <div class="container">
+        <div class="feed">
+            <div class="feed-header">
+                <h2>My Rebel Network</h2>
+            </div>
+
+            <div class="connections-grid">
+                <!-- Connection 1 -->
+                <div class="connection-card">
+                    <div class="connection-avatar"></div>
+                    <div class="connection-name">Sarah "Firewall" Williams</div>
+                    <div class="connection-title">Security Researcher</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 2 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
+                    <div class="connection-name">Marcus "Vanguard" Chen</div>
+                    <div class="connection-title">Blockchain Developer</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 3 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
+                    <div class="connection-name">Zara "Phantom" Rodriguez</div>
+                    <div class="connection-title">Digital Nomad</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 4 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #66ffff, #4dff4d);"></div>
+                    <div class="connection-name">Elijah "Cypher" Kim</div>
+                    <div class="connection-title">AI Ethics Researcher</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 5 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #cc66ff, #9966ff);"></div>
+                    <div class="connection-name">Nina "Nexus" Parker</div>
+                    <div class="connection-title">Mental Health Advocate</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 6 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #ff9966, #ffcc00);"></div>
+                    <div class="connection-name">Jamie "CodeBreaker" Wilson</div>
+                    <div class="connection-title">Ex-FAANG Engineer</div>
+                    <button class="message-btn">Message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Jobs Page -->
+<div id="jobs" class="page">
+    <div class="container">
+        <div class="feed">
+            <div class="feed-header">
+                <h2>Anti-Job Board</h2>
+                <div class="filter-options">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Remote</button>
+                    <button class="filter-btn">Flexible</button>
+                    <button class="filter-btn">No Managers</button>
+                </div>
+            </div>
+
+            <div class="job-list">
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #66ffff, #4dff4d);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Decentralized Dev Collective</div>
+                            <div class="post-author-title">Blockchain · DAO · Remote</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3>Smart Contract Developer</h3>
+                        <p>Help us build the future of work - no bosses, no pointless meetings, just code and freedom. We're a DAO looking for Solidity developers who want to escape corporate tech.</p>
+                        <p>✅ 100% remote</p>
+                        <p>✅ Flexible hours</p>
+                        <p>✅ Paid in crypto</p>
+                        <p>❌ No corporate BS</p>
+                    </div>
+                    <div class="post-actions-row">
+                        <button class="connect-btn">Apply Now</button>
+                        <button class="message-btn">Save Job</button>
+                    </div>
+                </div>
+
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Nomad Creatives</div>
+                            <div class="post-author-title">Design · Remote · Worldwide</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3>UX/UI Designer (Digital Nomad)</h3>
+                        <p>Design beautiful interfaces from anywhere in the world. We care about your work, not where or when you do it. Must have passport and love of adventure.</p>
+                        <p>✅ Work from anywhere</p>
+                        <p>✅ Results-based evaluation</p>
+                        <p>✅ Quarterly team retreats (tropical locations)</p>
+                        <p>❌ No time tracking</p>
+                    </div>
+                    <div class="post-actions-row">
+                        <button class="connect-btn">Apply Now</button>
+                        <button class="message-btn">Save Job</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messaging Page -->
+<div id="messaging" class="page">
+    <div class="container">
+        <div class="feed">
+            <div class="feed-header">
+                <h2>Rebel Chat</h2>
+            </div>
+
+            <div class="post">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div class="chat-partner">
+                            <div class="post-author-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
+                            <div class="post-author-name">Marcus "Vanguard" Chen</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages">
+                        <div class="message received">
+                            <div class="message-content">
+                                Hey Alex, loved your last post about corporate surveillance culture. So true!
+                            </div>
+                            <div class="message-time">10:24 AM</div>
+                        </div>
+
+                        <div class="message sent">
+                            <div class="message-content">
+                                Thanks Marcus! Your DeFi project looks like the perfect antidote. How's it going?
+                            </div>
+                            <div class="message-time">10:26 AM</div>
+                        </div>
+
+                        <div class="message received">
+                            <div class="message-content">
+                                Amazing! We just onboarded our 100th member who escaped traditional finance. The revolution is happening one escapee at a time! 🔥
+                            </div>
+                            <div class="message-time">10:28 AM</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type your message...">
+                        <button class="connect-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Theme Toggle Functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+
+    // Check for saved theme preference or respect OS preference
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    } else if (currentTheme === 'light') {
+        document.body.classList.remove('dark-theme');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    } else if (prefersDarkScheme.matches) {
+        document.body.classList.add('dark-theme');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        themeIcon.classList.add('fa-moon');
+        localStorage.setItem('theme', 'light');
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('dark-theme')) {
+            document.body.classList.remove('dark-theme');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.body.classList.add('dark-theme');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+
+    // Page navigation
+    function showPage(pageId) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+
+        // Show the requested page
+        document.getElementById(pageId).classList.add('active');
+
+        // Update active nav link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        if(pageId === 'home') {
+            document.querySelector('.nav-link[onclick="showPage(\'home\')"]').classList.add('active');
+        }
+    }
+
+    // Profile viewing
+    function showProfile(profileId) {
+        // In a real app, this would show the specific profile
+        // For this demo, we'll just show the current user profile
+        showPage('profile');
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if(e.key === 'Enter') {
+            const query = this.value.toLowerCase();
+            if(query.includes('job') || query.includes('work')) {
+                showPage('jobs');
+            } else if(query.includes('network') || query.includes('connect')) {
+                showPage('network');
+            } else if(query.includes('chat') || query.includes('message')) {
+                showPage('messaging');
+            } else {
+                alert(`Searching for rebels matching: "${query}"`);
+            }
+        }
+    });
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedOut - The Anti-Network</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for Themes */
+        :root {
+            /* Light Theme */
+            --bg-primary: #f5f7fa;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e9eff5;
+            --text-primary: #1d2226;
+            --text-secondary: #5e666e;
+            --text-tertiary: #8d959c;
+            --border-color: #e0e5eb;
+            --primary: #ff5a5f;
+            --primary-hover: #e04a4f;
+            --secondary: #5c6bc0;
+            --accent: #ffca28;
+            --success: #4caf50;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --profile-banner: linear-gradient(to right, #ff5a5f, #ff8a87);
+            --profile-avatar: linear-gradient(45deg, #ff5a5f, #ff8a87);
+        }
+
+        .dark-theme {
+            /* Dark Theme */
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f0f0f0;
+            --text-secondary: #cccccc;
+            --text-tertiary: #aaaaaa;
+            --border-color: #333333;
+            --primary: #ff5a5f;
+            --primary-hover: #ff7a7f;
+            --secondary: #7986cb;
+            --accent: #ffd54f;
+            --success: #66bb6a;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+            --profile-banner: linear-gradient(to right, #ff5a5f, #d8434d);
+            --profile-avatar: linear-gradient(45deg, #d8434d, #ff5a5f);
+        }
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: var(--bg-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--header-shadow);
+        }
+
+        .navbar-left, .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+            background-color: var(--bg-tertiary);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-tertiary);
+            border-radius: 20px;
+            padding: 5px 15px;
+            width: 300px;
+        }
+
+        .search-container i {
+            color: var(--text-tertiary);
+            margin-right: 8px;
+        }
+
+        .search-container input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            width: 100%;
+            outline: none;
+            padding: 8px 0;
+        }
+
+        .nav-icon {
+            position: relative;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .nav-icon:hover {
+            color: var(--primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+            cursor: pointer;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+        }
+
+        /* Container Layout */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            gap: 20px;
+            padding: 0 15px;
+        }
+
+        .sidebar, .right-sidebar {
+            flex: 0 0 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .feed {
+            flex: 1;
+        }
+
+        /* Page Styles */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* User Card */
+        .user-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+            margin: 0 auto 15px;
+        }
+
+        .user-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .user-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Sidebar Items */
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-item:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary);
+        }
+
+        .sidebar-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Feed Header */
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .feed-header h2 {
+            color: var(--primary);
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Profiles Grid */
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-banner {
+            height: 80px;
+            background: var(--profile-banner);
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--bg-secondary);
+            margin: -40px auto 10px;
+            background: var(--profile-avatar);
+            position: relative;
+        }
+
+        .profile-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .profile-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .profile-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .profile-bio {
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .connect-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .connect-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .message-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .message-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Right Sidebar Widgets */
+        .widget, .ad-container {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .widget-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .widget-header h3 {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .trending-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .trending-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .trending-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .trending-tag i {
+            color: var(--primary);
+        }
+
+        .trending-tag span {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .trending-stats {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+            padding-left: 28px;
+        }
+
+        .ad-container {
+            background: var(--profile-banner);
+            color: white;
+            padding: 20px;
+        }
+
+        .ad-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .ad-content p {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .ad-btn {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ad-btn:hover {
+            background-color: var(--bg-tertiary);
+            transform: scale(1.05);
+        }
+
+        /* Post Feed */
+        .post-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .create-post {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .create-post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .create-post-header .profile-avatar {
+            width: 50px;
+            height: 50px;
+            margin: 0;
+        }
+
+        .post-input {
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 20px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            width: 100%;
+            resize: none;
+            outline: none;
+            height: 60px;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .media-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .media-option {
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .media-option:hover {
+            color: var(--primary);
+        }
+
+        .post-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .post {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .post-author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+        }
+
+        .post-author-info {
+            flex: 1;
+        }
+
+        .post-author-name {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .post-author-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .post-time {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+        }
+
+        .post-actions-row {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px 0;
+            transition: color 0.3s ease;
+        }
+
+        .post-action:hover {
+            color: var(--primary);
+        }
+
+        /* Profile Page */
+        .profile-header {
+            background: var(--profile-banner);
+            border-radius: 10px 10px 0 0;
+            height: 200px;
+            position: relative;
+            margin-bottom: 80px;
+        }
+
+        .profile-avatar-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid var(--bg-secondary);
+            position: absolute;
+            bottom: -75px;
+            left: 30px;
+            background: var(--profile-avatar);
+        }
+
+        .profile-details {
+            background-color: var(--bg-secondary);
+            border-radius: 0 0 10px 10px;
+            padding: 100px 30px 30px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .profile-title {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .profile-bio {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .profile-stats-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .stat-value-large {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-label-large {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .profile-section {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Network Page */
+        .connections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .connection-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .connection-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--profile-avatar);
+            margin: 0 auto 10px;
+        }
+
+        .connection-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        .connection-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar, .right-sidebar {
+                flex: 1;
+            }
+
+            .profiles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .profiles-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profiles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .navbar-right {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <a href="#" class="logo" onclick="showPage('home')">
+            <i class="fas fa-skull"></i>
+            <span>LinkedOut</span>
+        </a>
+        <div class="nav-links">
+            <a href="#" class="nav-link active" onclick="showPage('home')">Feed</a>
+            <a href="#" class="nav-link" onclick="showPage('network')">Network</a>
+            <a href="#" class="nav-link" onclick="showPage('jobs')">Jobs</a>
+            <a href="#" class="nav-link" onclick="showPage('messaging')">Chat</a>
+        </div>
+    </div>
+    <div class="search-container">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search for rebels..." id="searchInput">
+    </div>
+    <div class="navbar-right">
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+        <div class="nav-icon">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+        </div>
+        <div class="nav-icon">
+            <i class="fas fa-comment-alt"></i>
+            <span class="notification-badge">7</span>
+        </div>
+        <div class="profile-pic" onclick="showPage('profile')"></div>
+    </div>
+</nav>
+
+<!-- Home Page -->
+<div id="home" class="page active">
+    <div class="container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="user-card">
+                <div class="profile-img"></div>
+                <h3>Alex "Renegade" Johnson</h3>
+                <p>Corporate Escapee | Tech Industry Critic</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">328</div>
+                        <div class="stat-label">Connections</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">1.2K</div>
+                        <div class="stat-label">Followers</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="sidebar-item" onclick="showPage('network')">
+                <i class="fas fa-user-friends"></i>
+                <span>My Network</span>
+            </a>
+            <a href="#" class="sidebar-item" onclick="showPage('jobs')">
+                <i class="fas fa-briefcase"></i>
+                <span>Job Alerts</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-bookmark"></i>
+                <span>Saved Posts</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-users"></i>
+                <span>Groups</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-hashtag"></i>
+                <span>Followed Hashtags</span>
+            </a>
+        </aside>
+        <!-- Main Feed -->
+        <main class="feed">
+            <div class="feed-header">
+                <h2>Rebel Feed</h2>
+                <div class="filter-options">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Tech</button>
+                    <button class="filter-btn">Creative</button>
+                    <button class="filter-btn">Finance</button>
+                </div>
+            </div>
+
+            <!-- Create Post -->
+            <div class="create-post">
+                <div class="create-post-header">
+                    <div class="profile-avatar"></div>
+                    <textarea class="post-input" placeholder="Share your corporate horror story or anti-work wisdom..."></textarea>
+                </div>
+                <div class="post-actions">
+                    <div class="media-options">
+                        <div class="media-option">
+                            <i class="fas fa-image"></i> Photo
+                        </div>
+                        <div class="media-option">
+                            <i class="fas fa-video"></i> Video
+                        </div>
+                        <div class="media-option">
+                            <i class="fas fa-calendar-alt"></i> Event
+                        </div>
+                    </div>
+                    <button class="post-btn">Post</button>
+                </div>
+            </div>
+
+            <!-- Posts Feed -->
+            <div class="post-feed">
+                <!-- Post 1 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Sarah "Firewall" Williams</div>
+                            <div class="post-author-title">Security Researcher | Ethical Hacker</div>
+                        </div>
+                        <div class="post-time">2h ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Just exposed another corporate "security" system that was basically a welcome mat for hackers. The CISO's face when I showed how easy it was to access their entire customer database... priceless! 😂</p>
+                        <p>#CorporateSecurityTheater #EthicalHacking #LinkedOut</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 128 likes</div>
+                        <div>💬 42 comments</div>
+                        <div>🔄 19 shares</div>
+                    </div>
+                    <div class="post-actions-row">
+                        <div class="post-action">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-comment"></i> Comment
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share"></i> Share
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Marcus "Vanguard" Chen</div>
+                            <div class="post-author-title">Blockchain Developer | DeFi Architect</div>
+                        </div>
+                        <div class="post-time">5h ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Corporate finance departments hate this one simple trick: decentralized autonomous organizations. Why have middle managers when code can do the job better? 🤖</p>
+                        <p>Just launched our new DAO for freelance developers. Join us and escape the corporate overlords!</p>
+                        <p>#DeFiRevolution #DAOs #CorporateEscape</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 217 likes</div>
+                        <div>💬 63 comments</div>
+                        <div>🔄 32 shares</div>
+                    </div>
+                    <div class="post-actions-row">
+                        <div class="post-action">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-comment"></i> Comment
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share"></i> Share
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 3 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Zara "Phantom" Rodriguez</div>
+                            <div class="post-author-title">Digital Nomad | Remote Work Advocate</div>
+                        </div>
+                        <div class="post-time">1d ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Woke up to this view in Bali while my former colleagues are stuck in another pointless 8am Zoom meeting. Remember: "Remote work" shouldn't mean chaining yourself to a laptop from 9-5. True freedom is location AND time independence!</p>
+                        <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Bali beach" style="width:100%; border-radius:10px; margin-top:10px;">
+                        <p>#DigitalNomad #WorkFromAnywhere #CorporateEscape #BaliLife</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 342 likes</div>
+                        <div>💬 87 comments</div>
+                        <div>🔄 45 shares</div>
+                    </div>
+                    <div class="post-actions-row">
+                        <div class="post-action">
+                            <i class="far fa-thumbs-up"></i> Like
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-comment"></i> Comment
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share"></i> Share
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Rebel Trends</h3>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>AntiWorkMovement</span>
+                    </div>
+                    <div class="trending-stats">4,218 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>QuietQuitting</span>
+                    </div>
+                    <div class="trending-stats">3,871 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>DigitalNomadLife</span>
+                    </div>
+                    <div class="trending-stats">2,943 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>CorporateEscapees</span>
+                    </div>
+                    <div class="trending-stats">2,516 posts today</div>
+                </div>
+                <div class="trending-item">
+                    <div class="trending-tag">
+                        <i class="fas fa-hashtag"></i>
+                        <span>BurnoutRecovery</span>
+                    </div>
+                    <div class="trending-stats">1,982 posts today</div>
+                </div>
+            </div>
+            <div class="ad-container">
+                <div class="ad-content">
+                    <h3>Corporate Burnout?</h3>
+                    <p>Join our community of professionals who've escaped the 9-to-5 grind and reclaimed their lives.</p>
+                    <button class="ad-btn">Learn the Secrets</button>
+                </div>
+            </div>
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Recent Rebels</h3>
+                </div>
+                <div class="trending-item" onclick="showProfile('jamie')">
+                    <div class="trending-tag">
+                        <i class="fas fa-user"></i>
+                        <span>Jamie "CodeBreaker" Wilson</span>
+                    </div>
+                    <div class="trending-stats">Former FAANG Engineer</div>
+                </div>
+                <div class="trending-item" onclick="showProfile('taylor')">
+                    <div class="trending-tag">
+                        <i class="fas fa-user"></i>
+                        <span>Taylor "FreeSpirit" Davis</span>
+                    </div>
+                    <div class="trending-stats">Ex-Consultant, Now Travel Blogger</div>
+                </div>
+                <div class="trending-item" onclick="showProfile('riley')">
+                    <div class="trending-tag">
+                        <i class="fas fa-user"></i>
+                        <span>Riley "ZenMaster" Thompson</span>
+                    </div>
+                    <div class="trending-stats">Corporate Lawyer to Yoga Instructor</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<!-- Profile Page -->
+<div id="profile" class="page">
+    <div class="container">
+        <div class="profile-header"></div>
+        <div class="profile-avatar-large"></div>
+        <div class="profile-details">
+            <h1 class="profile-name">Alex "Renegade" Johnson</h1>
+            <div class="profile-title">Corporate Escapee | Tech Industry Critic</div>
+            <div class="profile-bio">
+                <p>After 10 years climbing the corporate ladder only to realize it was leaning against the wrong wall, I jumped. Now I help others escape the soul-crushing grind of corporate life and find meaningful work that doesn't require sacrificing your humanity at the altar of "productivity."</p>
+                <p>Specializing in exposing toxic workplace cultures, meaningless KPIs, and the illusion of the "dream job" sold to us by career counselors who've never worked a real job in their lives.</p>
+            </div>
+
+            <div class="profile-stats-row">
+                <div class="profile-stat">
+                    <div class="stat-value-large">328</div>
+                    <div class="stat-label-large">Connections</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="stat-value-large">1.2K</div>
+                    <div class="stat-label-large">Followers</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="stat-value-large">87</div>
+                    <div class="stat-label-large">Posts</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="stat-value-large">24</div>
+                    <div class="stat-label-large">Projects</div>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button class="connect-btn">Connect</button>
+                <button class="message-btn">Message</button>
+            </div>
+
+            <div class="profile-section">
+                <h3 class="section-title">Experience</h3>
+                <div class="experience-item">
+                    <h4>Corporate Escape Artist</h4>
+                    <p>Self-employed · 2019 - Present</p>
+                    <p>Helping professionals break free from golden handcuffs and find work that doesn't make them question the meaning of life every Sunday evening.</p>
+                </div>
+                <div class="experience-item">
+                    <h4>Senior Product Manager</h4>
+                    <p>TechCorp Inc · 2014 - 2019</p>
+                    <p>Managed products nobody needed to solve problems that didn't exist. Excelled at PowerPoint and corporate buzzword bingo.</p>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h3 class="section-title">Recent Activity</h3>
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Alex "Renegade" Johnson</div>
+                            <div class="post-author-title">Corporate Escapee | Tech Industry Critic</div>
+                        </div>
+                        <div class="post-time">1d ago</div>
+                    </div>
+                    <div class="post-content">
+                        <p>Just had a former colleague reach out asking how I "escaped." Sent them my "Corporate Exit Strategy" guide. Remember folks: the best time to plan your escape was yesterday. The second best time is today!</p>
+                        <p>#CorporateEscape #WorkReform #TakeBackYourLife</p>
+                    </div>
+                    <div class="post-stats">
+                        <div>👍 142 likes</div>
+                        <div>💬 28 comments</div>
+                        <div>🔄 15 shares</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Network Page -->
+<div id="network" class="page">
+    <div class="container">
+        <div class="feed">
+            <div class="feed-header">
+                <h2>My Rebel Network</h2>
+            </div>
+
+            <div class="connections-grid">
+                <!-- Connection 1 -->
+                <div class="connection-card">
+                    <div class="connection-avatar"></div>
+                    <div class="connection-name">Sarah "Firewall" Williams</div>
+                    <div class="connection-title">Security Researcher</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 2 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
+                    <div class="connection-name">Marcus "Vanguard" Chen</div>
+                    <div class="connection-title">Blockchain Developer</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 3 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
+                    <div class="connection-name">Zara "Phantom" Rodriguez</div>
+                    <div class="connection-title">Digital Nomad</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 4 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #66ffff, #4dff4d);"></div>
+                    <div class="connection-name">Elijah "Cypher" Kim</div>
+                    <div class="connection-title">AI Ethics Researcher</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 5 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #cc66ff, #9966ff);"></div>
+                    <div class="connection-name">Nina "Nexus" Parker</div>
+                    <div class="connection-title">Mental Health Advocate</div>
+                    <button class="message-btn">Message</button>
+                </div>
+
+                <!-- Connection 6 -->
+                <div class="connection-card">
+                    <div class="connection-avatar" style="background: linear-gradient(45deg, #ff9966, #ffcc00);"></div>
+                    <div class="connection-name">Jamie "CodeBreaker" Wilson</div>
+                    <div class="connection-title">Ex-FAANG Engineer</div>
+                    <button class="message-btn">Message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Jobs Page -->
+<div id="jobs" class="page">
+    <div class="container">
+        <div class="feed">
+            <div class="feed-header">
+                <h2>Anti-Job Board</h2>
+                <div class="filter-options">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Remote</button>
+                    <button class="filter-btn">Flexible</button>
+                    <button class="filter-btn">No Managers</button>
+                </div>
+            </div>
+
+            <div class="job-list">
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #66ffff, #4dff4d);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Decentralized Dev Collective</div>
+                            <div class="post-author-title">Blockchain · DAO · Remote</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3>Smart Contract Developer</h3>
+                        <p>Help us build the future of work - no bosses, no pointless meetings, just code and freedom. We're a DAO looking for Solidity developers who want to escape corporate tech.</p>
+                        <p>✅ 100% remote</p>
+                        <p>✅ Flexible hours</p>
+                        <p>✅ Paid in crypto</p>
+                        <p>❌ No corporate BS</p>
+                    </div>
+                    <div class="post-actions-row">
+                        <button class="connect-btn">Apply Now</button>
+                        <button class="message-btn">Save Job</button>
+                    </div>
+                </div>
+
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-author-avatar" style="background: linear-gradient(45deg, #ff66cc, #ff4d4d);"></div>
+                        <div class="post-author-info">
+                            <div class="post-author-name">Nomad Creatives</div>
+                            <div class="post-author-title">Design · Remote · Worldwide</div>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <h3>UX/UI Designer (Digital Nomad)</h3>
+                        <p>Design beautiful interfaces from anywhere in the world. We care about your work, not where or when you do it. Must have passport and love of adventure.</p>
+                        <p>✅ Work from anywhere</p>
+                        <p>✅ Results-based evaluation</p>
+                        <p>✅ Quarterly team retreats (tropical locations)</p>
+                        <p>❌ No time tracking</p>
+                    </div>
+                    <div class="post-actions-row">
+                        <button class="connect-btn">Apply Now</button>
+                        <button class="message-btn">Save Job</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Messaging Page -->
+<div id="messaging" class="page">
+    <div class="container">
+        <div class="feed">
+            <div class="feed-header">
+                <h2>Rebel Chat</h2>
+            </div>
+
+            <div class="post">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <div class="chat-partner">
+                            <div class="post-author-avatar" style="background: linear-gradient(45deg, #ffcc00, #ff9966);"></div>
+                            <div class="post-author-name">Marcus "Vanguard" Chen</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages">
+                        <div class="message received">
+                            <div class="message-content">
+                                Hey Alex, loved your last post about corporate surveillance culture. So true!
+                            </div>
+                            <div class="message-time">10:24 AM</div>
+                        </div>
+
+                        <div class="message sent">
+                            <div class="message-content">
+                                Thanks Marcus! Your DeFi project looks like the perfect antidote. How's it going?
+                            </div>
+                            <div class="message-time">10:26 AM</div>
+                        </div>
+
+                        <div class="message received">
+                            <div class="message-content">
+                                Amazing! We just onboarded our 100th member who escaped traditional finance. The revolution is happening one escapee at a time! 🔥
+                            </div>
+                            <div class="message-time">10:28 AM</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type your message...">
+                        <button class="connect-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Theme Toggle Functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+
+    // Check for saved theme preference or respect OS preference
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    } else if (currentTheme === 'light') {
+        document.body.classList.remove('dark-theme');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+    } else if (prefersDarkScheme.matches) {
+        document.body.classList.add('dark-theme');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        themeIcon.classList.add('fa-moon');
+        localStorage.setItem('theme', 'light');
+    }
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('dark-theme')) {
+            document.body.classList.remove('dark-theme');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.body.classList.add('dark-theme');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+
+    // Page navigation
+    function showPage(pageId) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+
+        // Show the requested page
+        document.getElementById(pageId).classList.add('active');
+
+        // Update active nav link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        if(pageId === 'home') {
+            document.querySelector('.nav-link[onclick="showPage(\'home\')"]').classList.add('active');
+        }
+    }
+
+    // Profile viewing
+    function showProfile(profileId) {
+        // In a real app, this would show the specific profile
+        // For this demo, we'll just show the current user profile
+        showPage('profile');
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if(e.key === 'Enter') {
+            const query = this.value.toLowerCase();
+            if(query.includes('job') || query.includes('work')) {
+                showPage('jobs');
+            } else if(query.includes('network') || query.includes('connect')) {
+                showPage('network');
+            } else if(query.includes('chat') || query.includes('message')) {
+                showPage('messaging');
+            } else {
+                alert(`Searching for rebels matching: "${query}"`);
+            }
+        }
+    });
+</script>
 </body>
 </html>
