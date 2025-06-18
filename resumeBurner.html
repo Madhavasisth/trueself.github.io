@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LinkedOut - ResumeBurner</title>
+    <link rel="stylesheet" href="resumeBurner.css">
+    <script src="resumeBurner.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <span class="logo">LinkedOut</span>
+        <nav class="nav">
+            <a href="#">Feed</a>
+            <a href="#">My Network</a>
+            <a href="#">Jobs</a>
+            <a href="#" class="active">ResumeBurner</a>
+            <a href="#">Chat</a>
+        </nav>
+        <div class="search">
+            <input type="text" placeholder="Search for rebels...">
+        </div>
+        <div class="navbar-icons">
+            <span class="icon-settings"></span>
+            <span class="icon-bell"></span>
+            <span class="icon-message"></span>
+            <span class="icon-profile"></span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <main class="resumeburner">
+            <h2>ResumeBurner</h2>
+            <p>Upload your resume and watch it get shredded and burned to ashes. Because who needs a resume in the anti-work revolution?</p>
+            <form id="resumeForm">
+                <input type="file" id="resumeInput" accept=".pdf,.doc,.docx,.txt" required>
+                <button type="submit">Burn My Resume</button>
+            </form>
+            <div id="animationArea">
+                <div id="shredder">
+                    <div class="shredder-top"></div>
+                    <div class="shredder-slot"></div>
+                    <div class="shredder-body"></div>
+                </div>
+                <div id="resumePaper">
+                    <span id="resumeFileName"></span>
+                </div>
+                <div id="ashes"></div>
+                <div id="flames"></div>
+            </div>
+            <div id="burnedMessage"></div>
+        </main>
+    </div>
+    <script src="resumeburner.js"></script>
+</body>
+</html>

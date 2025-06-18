@@ -1,0 +1,326 @@
+body {
+    background: #18191c;
+    color: #fff;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background: #232326;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    height: 60px;
+    border-bottom: 1px solid #222;
+}
+
+.logo {
+    color: #ff4c5b;
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-right: 30px;
+    letter-spacing: 1px;
+}
+
+.nav {
+    display: flex;
+    gap: 20px;
+}
+
+.nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.nav a.active, .nav a:hover {
+    background: #ff4c5b;
+    color: #fff;
+}
+
+.search {
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+.search input {
+    background: #232326;
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 7px 16px;
+    color: #fff;
+    font-size: 1em;
+    outline: none;
+}
+
+.navbar-icons {
+    display: flex;
+    gap: 16px;
+}
+
+.icon-settings, .icon-bell, .icon-message, .icon-profile {
+    width: 24px;
+    height: 24px;
+    background: #333;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    margin: 40px auto 0 auto;
+    max-width: 900px;
+    padding: 0 30px;
+}
+
+.resumeburner {
+    background: #232326;
+    border-radius: 16px;
+    padding: 36px 32px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 32px 0 rgba(255,76,91,0.08);
+    text-align: center;
+}
+
+.resumeburner h2 {
+    color: #ff4c5b;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.5em;
+}
+
+.resumeburner p {
+    color: #bbb;
+    margin-bottom: 24px;
+}
+
+#resumeForm {
+    margin-bottom: 30px;
+}
+
+#resumeInput {
+    background: #18191c;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-right: 10px;
+}
+
+#resumeForm button {
+    background: #ff4c5b;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 1em;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+#resumeForm button:hover {
+    background: #fff;
+    color: #ff4c5b;
+}
+
+#animationArea {
+    position: relative;
+    height: 320px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#shredder {
+    position: absolute;
+    left: 50%;
+    top: 40px;
+    transform: translateX(-50%);
+    width: 220px;
+    height: 120px;
+    z-index: 2;
+}
+
+.shredder-top {
+    width: 220px;
+    height: 30px;
+    background: #444;
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 2px 8px #0006;
+}
+
+.shredder-slot {
+    width: 120px;
+    height: 10px;
+    background: #222;
+    margin: 0 auto;
+    border-radius: 4px;
+    margin-top: -8px;
+    margin-bottom: 0;
+}
+
+.shredder-body {
+    width: 220px;
+    height: 60px;
+    background: #333;
+    border-radius: 0 0 16px 16px;
+    margin-top: 0;
+    box-shadow: 0 6px 16px #0008;
+}
+
+#resumePaper {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 140px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px #0005;
+    color: #232326;
+    font-weight: bold;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    transition: box-shadow 0.2s;
+    overflow: hidden;
+    opacity: 1;
+}
+
+#resumePaper.burning {
+    animation: burnPaper 2.2s forwards;
+}
+
+@keyframes burnPaper {
+    0% { opacity: 1; }
+    60% { opacity: 1; transform: translateX(-50%) translateY(120px) scaleY(1.1) rotate(-2deg);}
+    80% { opacity: 0.7; }
+    100% { opacity: 0; transform: translateX(-50%) translateY(180px) scaleY(0.7) rotate(8deg);}
+}
+
+#resumePaper.shredding {
+    animation: shredPaper 1.2s forwards;
+}
+
+@keyframes shredPaper {
+    0% { top: 10px; }
+    60% { top: 80px; }
+    100% { top: 120px; height: 0; opacity: 0; }
+}
+
+#ashes {
+    position: absolute;
+    left: 50%;
+    top: 180px;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 40px;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+}
+
+#ashes.visible {
+    opacity: 1;
+    animation: ashesAppear 1.2s;
+}
+
+@keyframes ashesAppear {
+    0% { opacity: 0; }
+    60% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+.ash {
+    position: absolute;
+    width: 16px;
+    height: 8px;
+    background: #888;
+    border-radius: 50%;
+    opacity: 0.7;
+    bottom: 0;
+    left: 0;
+    animation: ashFloat 2.2s forwards;
+}
+
+@keyframes ashFloat {
+    0% { opacity: 0.7; }
+    80% { opacity: 0.5; }
+    100% { opacity: 0; transform: translateY(-30px) scale(0.7);}
+}
+
+#flames {
+    position: absolute;
+    left: 50%;
+    top: 160px;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+}
+
+#flames.visible {
+    opacity: 1;
+    animation: flamesAppear 0.7s;
+}
+
+@keyframes flamesAppear {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.flame {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 18px;
+    height: 36px;
+    background: radial-gradient(ellipse at center, #ffb347 0%, #ff4c5b 80%, #ff4c5b 100%);
+    border-radius: 50% 50% 40% 40%;
+    transform: translateX(-50%) scaleY(1);
+    opacity: 0.8;
+    animation: flameFlicker 1.2s infinite alternate;
+}
+
+.flame.small {
+    width: 10px;
+    height: 18px;
+    left: 30%;
+    background: radial-gradient(ellipse at center, #fff 0%, #ffb347 60%, #ff4c5b 100%);
+    opacity: 0.6;
+    animation-duration: 0.8s;
+}
+
+.flame.tiny {
+    width: 7px;
+    height: 10px;
+    left: 70%;
+    background: radial-gradient(ellipse at center, #fff 0%, #ffb347 60%, #ff4c5b 100%);
+    opacity: 0.5;
+    animation-duration: 0.6s;
+}
+
+@keyframes flameFlicker {
+    0% { transform: translateX(-50%) scaleY(1) scaleX(1);}
+    50% { transform: translateX(-50%) scaleY(1.1) scaleX(0.95);}
+    100% { transform: translateX(-50%) scaleY(0.9) scaleX(1.05);}
+}
+
+#burnedMessage {
+    margin-top: 30px;
+    color: #ff4c5b;
+    font-size: 1.2em;
+    font-weight: bold;
+    min-height: 32px;
+}
